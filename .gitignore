@@ -7,3 +7,5 @@ package-lock.json
 index1.html
 public/data/node_modules
 node_modules
+yarn.lock
+yarn-error.log

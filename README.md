@@ -2,38 +2,20 @@
 
 ## Description
 CryptoBike is a service that allows people to rent out their bikes remotely by attaching a simple device to their bike lock.
-The web app is hosted on Microsoft Azure and is built on Node.js and Azure SQL Database.
+It tracks the bike through an ERC-721 implementation which contains telemetry data received from the bike in real time.
 
-## CryptoLock Requirements
-* Owner must be able to transfer cryptographic key to renter, allowing renter to unlock lock via RFID
-* Owner must be able to unlock own lock
-* Lock must emit alarm if forced open or if pressure sensor detects tampering
+## Build Instructions
+* Make sure you have (Node.js)[https://nodejs.org/en/], (truffle)[https://truffleframework.com/] and (ganache)[https://truffleframework.com/ganache] (or the CLI)
+* Clone the repo using `git clone https://github.com/govi218/CryptoBike`
+* `cd` into the folder and run `yarn` (if you don't have yarn, you can get it (here)[https://yarnpkg.com/lang/en/docs/install/#debian-stable])
+* Now run `cd crypto-bike-abi && yarn` as it has separate dependencies
+* Go to the project root and run `npm start`; this will create a local server that you access by running `https://localhost:3000` on your browser
+* Start the Ganache server
+* Navigate to the `crypto-bike-abi` folder again, and run:
 
-## Website Requirements
-* User registration and login
-* Geographical search for bikes
+```
+truffle compile
+truffle migrate
+```
 
-## Use cases:
-### Requirements:
-* Two users (one owner, one renter)
-* One CryptoLock
-### Use case 1:
-  * Owner unlocks own CryptoLock
-### Use case 2:
-  * Renter "rents" bike from owner
-  * Renter receives cryptographic key
-  * Renter unlocks CryptoLock
-### Use case 3:
-  * Set off alarm
-
-## Future features
-* Owner gets notified:
-  * when lock is locked/unlocked
-  * if lock is broken
-* Payment API
-* Location search
-* Move the alarm and the Raspberry Pi from the CryptoLock to a module on the bike
-* Bike module that pings CryptoLock at regular intervals and emits alarm if:
-  * loses connection for 3 consecutive pings (prevents bike from being separated from lock)
-  * CryptoLock returns ping informing it has been tampered with or broken
-  * (alarm would be transferred from CryptoLock to bike module)
+Finally, you can head back to the website and book a (randomly generated) bike. 

@@ -131,12 +131,12 @@
       popup.open(map);
 
               
-      let button = document.createElement('a');
-      button.textContent = 'Book this bike!';
-      button.href = '#log-in-modal';
-      button.className = 'map-entity';
-      button.id = 'map';
-      button.addEventListener('click', () => {
+      let booking_popup = document.createElement('a');
+      booking_popup.textContent = 'Book this bike!';
+      booking_popup.href = '#log-in-modal';
+      booking_popup.className = 'map-entity';
+      booking_popup.id = 'map';
+      booking_popup.addEventListener('click', () => {
         $.magnificPopup.open({
           items: {
               src: '#log-in-modal'
@@ -145,14 +145,53 @@
           closeOnBgClick :true, 
           showCloseBtn : true, 
           enableEscapeKey : true
-          // closeMarkup: '<button class="mfp-close mfp-new-close" type="button" title="Close (Esc)"> { costume button with close icon image } </button>'
         });
       });
-      document.getElementById('bike_function').innerHTML = bike.function;
-      document.getElementById('bike_model').innerHTML = bike.model;
-      document.getElementById('bike_owner').innerHTML = bike.owner.name;
-      document.getElementById('btn').appendChild(button);
+
+      let submit_btn = document.createElement('a');
+      submit_btn.textContent = 'Book this bike!';
+      submit_btn.className = 'btn btn-primary btn-lg rounded-pill';
+      submit_btn.addEventListener('click', () => {
+        let 
+          data = {},
+          renter = {},
+          renter_name = id('name').value,
+          renter_email = id('email').value,
+          renter_phone = id('phone').value;
+
+        // deMorgan's law in action ;)
+        if (!(exists(renter_name) && exists(renter_email) && exists(renter_phone))) {
+          alert('enter all details!');
+          return;
+        }
+        
+        renter[name] = renter_name;
+        renter[email] = renter_email;
+        renter[phone] = renter_phone;
+        
+        data[renter] = renter;
+        data[bike] = bike;
+
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          url: '/book_bike',
+          success: function(res) {
+            console.log(res);
+          }
+        });
+      });
+
+      id('bike_function').innerHTML = bike.function;
+      id('bike_model').innerHTML = bike.model;
+      id('bike_owner').innerHTML = bike.owner.name;
+
+      id('btn').appendChild(booking_popup);
+      id('submit_btn').appendChild(submit_btn);
     }
+
+    /* Utilities */
 
     let create_bike = () => {
       // TODO: Add bike picture
@@ -185,18 +224,15 @@
       return Math.random().toString(36).substring(8);
     }
 
-    let bake_cookie = (name, value) => {
-      let cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-      document.cookie += ', ' + cookie;
-      console.log(document.cookie);
+    let exists = (thing) => {
+      if (thing !== undefined && thing !== null && thing !== '') return true;
+      return false;
     }
 
-    let read_cookie = (name) => {
-      var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-      result && (result = JSON.parse(result[1]));
-      return result;
+    let id = (element) => {
+      return document.getElementById(element);
     }
-
+  
   </script>
   <style>
     #map {
@@ -303,7 +339,8 @@
             <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
             <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
               <i class="fa fa-close"></i>
-              Close</a>
+              Close
+            </a>
           </div>
         </div>
       </div>
@@ -324,7 +361,8 @@
             <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
             <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
               <i class="fa fa-close"></i>
-              Close</a>
+              Close
+            </a>
           </div>
         </div>
       </div>
@@ -372,12 +410,7 @@
               </div>
               <br>
               <div id="success"></div>
-              <!-- <div class="form-group">
-                <button class="btn btn-primary btn portfolio-modal-dismiss" id="register">Book</button>
-              </div> -->
-              <a class="btn btn-primary btn-lg rounded-pill">
-                <i class="fa fa-close"></i>
-                Book</a>
+              <div id="submit_btn"></div>
             </form>
           </div>
         </div>
@@ -399,7 +432,8 @@
             <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
             <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
               <i class="fa fa-close"></i>
-              Close</a>
+              Close
+            </a>
           </div>
         </div>
       </div>

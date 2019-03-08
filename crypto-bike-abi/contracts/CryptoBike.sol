@@ -1,4 +1,4 @@
-pragma solidity 0.5.0;
+pragma solidity 0.5.5;
 
 import "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
