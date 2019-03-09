@@ -6,4 +6,4 @@ contract("Gradient token", accounts => {
     let owner = await instance.owner();
     assert.equal(owner, accounts[0]);
   });
-});
+});1

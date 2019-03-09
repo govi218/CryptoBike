@@ -3,8 +3,33 @@ let router = express.Router();
 let fs = require('fs');
 let path = require('path');
 
-const msRestAzure = require('ms-rest-azure');
-const SQLManagement = require("azure-arm-sql");
+// Import libraries
+let Web3            = require('web3'),
+    contract        = require("truffle-contract"),
+    MyContractJSON  = require(path.join(__dirname, '../crypto-bike-abi/build/contracts/CryptoBike.json'));
+
+// Setup RPC connection   
+let provider    = new Web3.providers.HttpProvider("http://localhost:8545");
+
+
+// Read JSON and attach RPC connection (Provider)
+var MyContract = contract(MyContractJSON);
+MyContract.setProvider(provider);
+
+deploy();
+
+async function deploy() {
+  // Use Truffle as usual
+  MyContract.deployed().then((instance) => {
+    let promise = instance.add_bike.call('dfhgjhsd', 'arg2', 'arg3', {from: ' 0x56d0b7b49a58a80db230c99f1c5af29633c55730'})
+    // return promise;
+  }).then(function(result) {
+      console.log(result);
+  
+  }).catch((error) => {
+    throw(error);
+  }); 
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
